@@ -1,0 +1,16 @@
+﻿---
+import { getCollection } from "astro:content";
+import TipLayout from "../../layouts/TipLayout.astro";
+
+export async function getStaticPaths() {
+  const tips = await getCollection("tips", (t) => !t.data.draft);
+  return tips.map((tip) => ({
+    params: { slug: tip.id },
+    props: { tip },
+  }));
+}
+
+const { tip } = Astro.props;
+---
+
+<TipLayout tip={tip} />

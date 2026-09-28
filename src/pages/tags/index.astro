@@ -1,0 +1,35 @@
+﻿---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const tips = await getCollection("tips", (t) => !t.data.draft);
+const tagCount: Record<string, number> = {};
+tips.forEach((tip) => {
+  tip.data.tags.forEach((tag) => {
+    tagCount[tag] = (tagCount[tag] || 0) + 1;
+  });
+});
+const tags = Object.entries(tagCount).sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="所有标签" description="按标签浏览所有技巧">
+  <h1 class="text-3xl font-bold mb-8">所有标签</h1>
+
+  {tags.length > 0 ? (
+    <div class="flex flex-wrap gap-3">
+      {tags.map(([tag, count]) => (
+        <a
+          href={`/tags/${tag}/`}
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--bg-muted)] hover:bg-brand-50 hover:text-brand-600 transition-all"
+        >
+          <span class="font-medium">#{tag}</span>
+          <span class="text-xs text-[var(--text-subtle)]">{count}</span>
+        </a>
+      ))}
+    </div>
+  ) : (
+    <p class="text-center text-[var(--text-muted)] py-12">
+      还没有标签。
+    </p>
+  )}
+</BaseLayout>

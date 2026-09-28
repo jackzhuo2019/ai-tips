@@ -1,0 +1,52 @@
+﻿---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TipCard from "../components/TipCard.astro";
+import Search from "../components/Search.astro";
+import CategoryNav from "../components/CategoryNav.astro";
+import { getCollection } from "astro:content";
+import { CATEGORIES, SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+const allTips = await getCollection("tips", (t) => !t.data.draft);
+const tips = allTips.sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date));
+const recent = tips.slice(0, 6);
+---
+
+<BaseLayout>
+  <section class="text-center py-12 sm:py-16">
+    <h1 class="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
+      AI 使用技巧合集
+    </h1>
+    <p class="text-lg text-[var(--text-muted)] max-w-2xl mx-auto mb-8">
+      {SITE_DESCRIPTION}
+    </p>
+    <div class="max-w-md mx-auto">
+      <Search />
+    </div>
+  </section>
+
+  <section class="mb-12">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-bold">浏览分类</h2>
+    </div>
+    <CategoryNav />
+  </section>
+
+  <section>
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-bold">最新技巧</h2>
+      {tips.length > 6 && (
+        <span class="text-sm text-[var(--text-muted)]">共 {tips.length} 篇</span>
+      )}
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4">
+      {recent.map((tip) => (
+        <TipCard tip={tip} />
+      ))}
+    </div>
+    {tips.length === 0 && (
+      <p class="text-center text-[var(--text-muted)] py-12">
+        还没有内容，敬请期待。
+      </p>
+    )}
+  </section>
+</BaseLayout>

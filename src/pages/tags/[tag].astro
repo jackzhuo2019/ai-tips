@@ -1,0 +1,35 @@
+﻿---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TipCard from "../../components/TipCard.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const tips = await getCollection("tips", (t) => !t.data.draft);
+  const tags = [...new Set(tips.flatMap((t) => t.data.tags))];
+  return tags.map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      tips: tips
+        .filter((t) => t.data.tags.includes(tag))
+        .sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date)),
+    },
+  }));
+}
+
+const { tag, tips } = Astro.props;
+---
+
+<BaseLayout title={`#${tag}`} description={`标签 "${tag}" 下的所有技巧`}>
+  <div class="mb-8">
+    <a href="/tags/" class="text-sm text-brand-600 hover:underline mb-2 inline-block">所有标签</a>
+    <h1 class="text-3xl font-bold">#{tag}</h1>
+    <p class="text-[var(--text-muted)] mt-1">{tips.length} 篇技巧</p>
+  </div>
+
+  <div class="grid sm:grid-cols-2 gap-4">
+    {tips.map((tip) => (
+      <TipCard tip={tip} />
+    ))}
+  </div>
+</BaseLayout>

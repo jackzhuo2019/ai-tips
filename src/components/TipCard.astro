@@ -1,0 +1,56 @@
+﻿---
+import { CATEGORY_MAP } from "../consts";
+import FormattedDate from "./FormattedDate.astro";
+
+interface Props {
+  tip: {
+    id: string;
+    data: {
+      title: string;
+      description: string;
+      category: string;
+      tags: string[];
+      difficulty: string;
+      date: Date;
+      cover?: string;
+    };
+  };
+}
+
+const { tip } = Astro.props;
+const cat = CATEGORY_MAP[tip.data.category];
+const difficultyColor: Record<string, string> = {
+  "入门": "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
+  "进阶": "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300",
+  "高阶": "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300",
+};
+---
+
+<a
+  href={`/tips/${tip.id}/`}
+  class="group block rounded-xl border border-[var(--border)] p-5 transition-all hover:border-brand-300 hover:shadow-md bg-[var(--bg)]"
+>
+  <div class="flex items-center gap-2 mb-2">
+    {cat && (
+      <span class="text-xs font-medium px-2 py-0.5 rounded bg-brand-50 text-brand-600 dark:bg-brand-900 dark:text-brand-300">
+        {cat.label}
+      </span>
+    )}
+    <span class={`text-xs font-medium px-2 py-0.5 rounded ${difficultyColor[tip.data.difficulty] || ""}`}>
+      {tip.data.difficulty}
+    </span>
+  </div>
+
+  <h3 class="font-semibold text-lg mb-1 group-hover:text-brand-600 transition-colors">
+    {tip.data.title}
+  </h3>
+  <p class="text-sm text-[var(--text-muted)] line-clamp-2 mb-3">
+    {tip.data.description}
+  </p>
+
+  <div class="flex items-center gap-2 text-xs text-[var(--text-subtle)]">
+    {tip.data.tags.slice(0, 3).map((tag) => (
+      <span class="px-2 py-0.5 rounded bg-[var(--bg-muted)]">#{tag}</span>
+    ))}
+  </div>
+</a>

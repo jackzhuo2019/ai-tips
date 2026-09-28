@@ -1,0 +1,23 @@
+﻿---
+import { CATEGORIES } from "../consts";
+
+const path = Astro.url.pathname;
+---
+
+<nav class="flex flex-wrap gap-2">
+  {CATEGORIES.map((cat) => {
+    const active = path === `/category/${cat.slug}/`;
+    return (
+      <a
+        href={`/category/${cat.slug}/`}
+        class={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+          active
+            ? "bg-brand-600 text-white"
+            : "bg-[var(--bg-muted)] text-[var(--text-muted)] hover:bg-brand-50 hover:text-brand-600"
+        }`}
+      >
+        {cat.label}
+      </a>
+    );
+  })}
+</nav>

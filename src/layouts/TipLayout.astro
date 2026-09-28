@@ -1,0 +1,76 @@
+﻿---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "./BaseLayout.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import Comments from "../components/Comments.astro";
+import { CATEGORY_MAP } from "../consts";
+
+interface Props {
+  tip: any;
+}
+
+const { tip } = Astro.props;
+const { Content } = await render(tip);
+const cat = CATEGORY_MAP[tip.data.category];
+
+const allTips = await getCollection("tips", (t) => !t.data.draft);
+const related = allTips
+  .filter(
+    (t) =>
+      t.id !== tip.id &&
+      (t.data.category === tip.data.category ||
+        t.data.tags.some((tag) => tip.data.tags.includes(tag)))
+  )
+  .sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date))
+  .slice(0, 3);
+
+const difficultyColor: Record<string, string> = {
+  "入门": "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
+  "进阶": "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300",
+  "高阶": "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300",
+};
+---
+
+<BaseLayout title={tip.data.title} description={tip.data.description} ogImage={tip.data.cover}>
+  <article>
+    <a href={`/category/${tip.data.category}/`} class="text-sm text-brand-600 hover:underline mb-2 inline-block">
+      {cat?.label}
+    </a>
+    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">{tip.data.title}</h1>
+
+    <div class="flex flex-wrap items-center gap-3 text-sm text-[var(--text-muted)] mb-8">
+      <FormattedDate date={tip.data.date} />
+      <span class={`px-2 py-0.5 rounded text-xs font-medium ${difficultyColor[tip.data.difficulty]}`}>
+        {tip.data.difficulty}
+      </span>
+      {tip.data.tags.map((tag) => (
+        <a href={`/tags/${tag}/`} class="px-2 py-0.5 rounded bg-[var(--bg-muted)] hover:text-brand-600 transition-colors">
+          #{tag}
+        </a>
+      ))}
+    </div>
+
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+
+    {related.length > 0 && (
+      <section class="mt-12 pt-8 border-t border-[var(--border)]">
+        <h2 class="text-xl font-bold mb-6">相关技巧</h2>
+        <div class="grid sm:grid-cols-3 gap-4">
+          {related.map((t) => (
+            <a
+              href={`/tips/${t.id}/`}
+              class="block rounded-lg border border-[var(--border)] p-4 hover:border-brand-300 hover:shadow-md transition-all"
+            >
+              <div class="text-xs text-[var(--text-subtle)] mb-1">{CATEGORY_MAP[t.data.category]?.label}</div>
+              <div class="font-medium text-sm group-hover:text-brand-600">{t.data.title}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <Comments mapping="pathname" />
+  </article>
+</BaseLayout>

@@ -1,0 +1,45 @@
+﻿---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TipCard from "../../components/TipCard.astro";
+import CategoryNav from "../../components/CategoryNav.astro";
+import { getCollection } from "astro:content";
+import { CATEGORIES, CATEGORY_MAP } from "../../consts";
+
+export async function getStaticPaths() {
+  const tips = await getCollection("tips", (t) => !t.data.draft);
+  return CATEGORIES.map((cat) => ({
+    params: { category: cat.slug },
+    props: {
+      category: cat,
+      tips: tips
+        .filter((t) => t.data.category === cat.slug)
+        .sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date)),
+    },
+  }));
+}
+
+const { category, tips } = Astro.props;
+---
+
+<BaseLayout title={category.label} description={category.description}>
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">{category.label}</h1>
+    <p class="text-[var(--text-muted)]">{category.description}</p>
+  </div>
+
+  <div class="mb-8">
+    <CategoryNav />
+  </div>
+
+  {tips.length > 0 ? (
+    <div class="grid sm:grid-cols-2 gap-4">
+      {tips.map((tip) => (
+        <TipCard tip={tip} />
+      ))}
+    </div>
+  ) : (
+    <p class="text-center text-[var(--text-muted)] py-12">
+      这个分类下还没有内容。
+    </p>
+  )}
+</BaseLayout>
