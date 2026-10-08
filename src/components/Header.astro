@@ -1,8 +1,8 @@
 ﻿---
-import { SITE_TITLE, CATEGORIES, CATEGORY_MAP } from "../consts";
+import { SITE_TITLE, CATEGORIES, CATEGORY_MAP, url } from "../consts";
 
 const path = Astro.url.pathname;
-const isHome = path === "/";
+const isHome = path === url("");
 ---
 
 <header
@@ -11,7 +11,7 @@ const isHome = path === "/";
 >
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
-      <a href="/" class="flex items-center gap-2 font-bold text-lg">
+      <a href={url("")} class="flex items-center gap-2 font-bold text-lg">
         <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-brand-600 text-white text-sm font-bold">
           AI
         </span>
@@ -20,7 +20,7 @@ const isHome = path === "/";
 
       <nav class="hidden md:flex items-center gap-1">
         <a
-          href="/"
+          href={url("")}
           class={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors hover:bg-[var(--bg-muted)] ${
             isHome ? "text-brand-600" : "text-[var(--text-muted)]"
           }`}
@@ -29,26 +29,26 @@ const isHome = path === "/";
         </a>
         {CATEGORIES.map((cat) => (
           <a
-            href={`/category/${cat.slug}/`}
+            href={url(`category/${cat.slug}/`)}
             class={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors hover:bg-[var(--bg-muted)] ${
-              path.startsWith(`/category/${cat.slug}`) ? "text-brand-600" : "text-[var(--text-muted)]"
+              path.startsWith(url(`category/${cat.slug}`)) ? "text-brand-600" : "text-[var(--text-muted)]"
             }`}
           >
             {cat.label}
           </a>
         ))}
         <a
-          href="/tags/"
+          href={url("tags/")}
           class={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors hover:bg-[var(--bg-muted)] ${
-            path.startsWith("/tags") ? "text-brand-600" : "text-[var(--text-muted)]"
+            path.startsWith(url("tags")) ? "text-brand-600" : "text-[var(--text-muted)]"
           }`}
         >
           标签
         </a>
         <a
-          href="/about/"
+          href={url("about/")}
           class={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors hover:bg-[var(--bg-muted)] ${
-            path.startsWith("/about") ? "text-brand-600" : "text-[var(--text-muted)]"
+            path.startsWith(url("about")) ? "text-brand-600" : "text-[var(--text-muted)]"
           }`}
         >
           关于
@@ -82,14 +82,14 @@ const isHome = path === "/";
     </div>
 
     <nav id="mobile-menu" class="md:hidden hidden pb-4 space-y-1">
-      <a href="/" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-[var(--bg-muted)]">首页</a>
+      <a href={url("")} class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-[var(--bg-muted)]">首页</a>
       {CATEGORIES.map((cat) => (
-        <a href={`/category/${cat.slug}/`} class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-[var(--bg-muted)]">
+        <a href={url(`category/${cat.slug}/`)} class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-[var(--bg-muted)]">
           {cat.label}
         </a>
       ))}
-      <a href="/tags/" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-[var(--bg-muted)]">标签</a>
-      <a href="/about/" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-[var(--bg-muted)]">关于</a>
+      <a href={url("tags/")} class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-[var(--bg-muted)]">标签</a>
+      <a href={url("about/")} class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-[var(--bg-muted)]">关于</a>
     </nav>
   </div>
 </header>

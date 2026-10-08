@@ -6,6 +6,7 @@ import { SITE_URL } from "./src/consts.ts";
 
 export default defineConfig({
   site: SITE_URL,
+  base: '/ai-tips/',
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],

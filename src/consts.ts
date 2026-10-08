@@ -13,3 +13,9 @@ export const CATEGORIES = [
 export const CATEGORY_MAP: Record<string, { slug: string; label: string; description: string }> = Object.fromEntries(
   CATEGORIES.map((c) => [c.slug, c])
 );
+
+export const BASE = import.meta.env.BASE_URL;
+
+export function url(path = ""): string {
+  return `${BASE}${path.replace(/^\//, "")}`;
+}

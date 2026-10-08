@@ -1,5 +1,5 @@
 ﻿---
-import { CATEGORY_MAP } from "../consts";
+import { CATEGORY_MAP, url } from "../consts";
 import FormattedDate from "./FormattedDate.astro";
 
 interface Props {
@@ -27,7 +27,7 @@ const difficultyColor: Record<string, string> = {
 ---
 
 <a
-  href={`/tips/${tip.id}/`}
+  href={url(`tips/${tip.id}/`)}
   class="group block rounded-xl border border-[var(--border)] p-5 transition-all hover:border-brand-300 hover:shadow-md bg-[var(--bg)]"
 >
   <div class="flex items-center gap-2 mb-2">

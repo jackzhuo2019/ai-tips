@@ -1,15 +1,15 @@
 ﻿---
-import { CATEGORIES } from "../consts";
+import { CATEGORIES, url } from "../consts";
 
 const path = Astro.url.pathname;
 ---
 
 <nav class="flex flex-wrap gap-2">
   {CATEGORIES.map((cat) => {
-    const active = path === `/category/${cat.slug}/`;
+    const active = path === url(`category/${cat.slug}/`);
     return (
       <a
-        href={`/category/${cat.slug}/`}
+        href={url(`category/${cat.slug}/`)}
         class={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
           active
             ? "bg-brand-600 text-white"

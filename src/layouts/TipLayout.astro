@@ -3,7 +3,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "./BaseLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import Comments from "../components/Comments.astro";
-import { CATEGORY_MAP } from "../consts";
+import { CATEGORY_MAP, url } from "../consts";
 
 interface Props {
   tip: any;
@@ -33,7 +33,7 @@ const difficultyColor: Record<string, string> = {
 
 <BaseLayout title={tip.data.title} description={tip.data.description} ogImage={tip.data.cover}>
   <article>
-    <a href={`/category/${tip.data.category}/`} class="text-sm text-brand-600 hover:underline mb-2 inline-block">
+    <a href={url(`category/${tip.data.category}/`)} class="text-sm text-brand-600 hover:underline mb-2 inline-block">
       {cat?.label}
     </a>
     <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">{tip.data.title}</h1>
@@ -44,7 +44,7 @@ const difficultyColor: Record<string, string> = {
         {tip.data.difficulty}
       </span>
       {tip.data.tags.map((tag) => (
-        <a href={`/tags/${tag}/`} class="px-2 py-0.5 rounded bg-[var(--bg-muted)] hover:text-brand-600 transition-colors">
+        <a href={url(`tags/${tag}/`)} class="px-2 py-0.5 rounded bg-[var(--bg-muted)] hover:text-brand-600 transition-colors">
           #{tag}
         </a>
       ))}
@@ -60,7 +60,7 @@ const difficultyColor: Record<string, string> = {
         <div class="grid sm:grid-cols-3 gap-4">
           {related.map((t) => (
             <a
-              href={`/tips/${t.id}/`}
+              href={url(`tips/${t.id}/`)}
               class="block rounded-lg border border-[var(--border)] p-4 hover:border-brand-300 hover:shadow-md transition-all"
             >
               <div class="text-xs text-[var(--text-subtle)] mb-1">{CATEGORY_MAP[t.data.category]?.label}</div>

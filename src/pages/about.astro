@@ -1,5 +1,6 @@
 ﻿---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { url } from "../consts";
 ---
 
 <BaseLayout title="关于" description="关于 AI Tips 站点">
@@ -24,7 +25,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     <h2>订阅</h2>
     <p>
-      可以通过 <a href="/rss.xml">RSS</a> 订阅本站，获取最新更新。
+      可以通过 <a href={url("rss.xml")}>RSS</a> 订阅本站，获取最新更新。
       邮件订阅功能后续会加上。
     </p>
   </div>

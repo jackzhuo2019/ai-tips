@@ -1,6 +1,7 @@
 ﻿---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import { url } from "../../consts";
 
 const tips = await getCollection("tips", (t) => !t.data.draft);
 const tagCount: Record<string, number> = {};
@@ -19,7 +20,7 @@ const tags = Object.entries(tagCount).sort((a, b) => b[1] - a[1]);
     <div class="flex flex-wrap gap-3">
       {tags.map(([tag, count]) => (
         <a
-          href={`/tags/${tag}/`}
+          href={url(`tags/${tag}/`)}
           class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--bg-muted)] hover:bg-brand-50 hover:text-brand-600 transition-all"
         >
           <span class="font-medium">#{tag}</span>
