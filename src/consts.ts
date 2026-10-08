@@ -1,6 +1,6 @@
 ﻿export const SITE_TITLE = "AI Tips";
 export const SITE_DESCRIPTION = "AI 使用技巧合集 - MCP 工具、提示词、工作流、模型经验与实战案例";
-export const SITE_URL = "https://ai-tips.example.com";
+export const SITE_URL = "https://jackzhuo2019.github.io";
 
 export const CATEGORIES = [
   { slug: "mcp", label: "MCP 工具", description: "windows-mcp 及其他 MCP server 使用技巧" },
