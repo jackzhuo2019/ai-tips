@@ -1,4 +1,5 @@
 ﻿import { getCollection } from "astro:content";
+import { BASE } from "../consts";
 
 export async function GET() {
   const tips = await getCollection("tips", (t) => !t.data.draft);
@@ -8,7 +9,8 @@ export async function GET() {
       title: tip.data.title,
       description: tip.data.description,
       tags: tip.data.tags,
-      url: `/tips/${tip.id}/`,
+      category: tip.data.category,
+      url: `${BASE}tips/${tip.id}/`,
     }));
 
   return new Response(JSON.stringify(data), {

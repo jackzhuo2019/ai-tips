@@ -1,7 +1,6 @@
 ﻿---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import TipCard from "../components/TipCard.astro";
-import Search from "../components/Search.astro";
 import CategoryNav from "../components/CategoryNav.astro";
 import { getCollection } from "astro:content";
 import { CATEGORIES, SITE_TITLE, SITE_DESCRIPTION } from "../consts";
@@ -19,9 +18,16 @@ const recent = tips.slice(0, 6);
     <p class="text-lg text-[var(--text-muted)] max-w-2xl mx-auto mb-8">
       {SITE_DESCRIPTION}
     </p>
-    <div class="max-w-md mx-auto">
-      <Search />
-    </div>
+    <button
+      id="hero-search-trigger"
+      class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[var(--border)] bg-[var(--bg-subtle)] text-sm text-[var(--text-muted)] hover:bg-[var(--bg-muted)] transition-colors"
+    >
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      搜索文章...
+      <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-xs border border-[var(--border)] rounded ml-4">⌘K</kbd>
+    </button>
   </section>
 
   <section class="mb-12">
@@ -50,3 +56,10 @@ const recent = tips.slice(0, 6);
     )}
   </section>
 </BaseLayout>
+
+<script>
+  const heroSearch = document.getElementById("hero-search-trigger");
+  heroSearch?.addEventListener("click", () => {
+    if (window.openSearch) window.openSearch();
+  });
+</script>

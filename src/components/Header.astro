@@ -1,5 +1,6 @@
 ﻿---
-import { SITE_TITLE, CATEGORIES, CATEGORY_MAP, url } from "../consts";
+import { SITE_TITLE, CATEGORIES, url } from "../consts";
+import Search from "./Search.astro";
 
 const path = Astro.url.pathname;
 const isHome = path === url("");
@@ -57,6 +58,17 @@ const isHome = path === url("");
 
       <div class="flex items-center gap-2">
         <button
+          id="search-trigger"
+          class="flex items-center gap-2 px-2.5 py-1.5 rounded-md hover:bg-[var(--bg-muted)] transition-colors text-[var(--text-muted)]"
+          aria-label="搜索"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <kbd class="hidden lg:inline-flex items-center px-1.5 py-0.5 text-xs border border-[var(--border)] rounded">⌘K</kbd>
+        </button>
+
+        <button
           id="theme-toggle"
           class="p-2 rounded-md hover:bg-[var(--bg-muted)] transition-colors"
           aria-label="切换主题"
@@ -94,6 +106,8 @@ const isHome = path === url("");
   </div>
 </header>
 
+<Search />
+
 <script>
   const themeToggle = document.getElementById("theme-toggle");
   themeToggle?.addEventListener("click", () => {
@@ -105,5 +119,10 @@ const isHome = path === url("");
   const mobileMenu = document.getElementById("mobile-menu");
   mobileToggle?.addEventListener("click", () => {
     mobileMenu?.classList.toggle("hidden");
+  });
+
+  const searchTrigger = document.getElementById("search-trigger");
+  searchTrigger?.addEventListener("click", () => {
+    if (window.openSearch) window.openSearch();
   });
 </script>
